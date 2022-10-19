@@ -5,11 +5,16 @@ import MainView from './components/main-view/main-view';
 // Import statement to indicate that you need to bundle `./index.scss`
 import './index.scss';
 
+
+const cors = require('cors');
+
+app.use(cors());
+
 // Main component (will eventually use all the others)
 class MyFlixApplication extends React.Component {
     render() {
         return
-        <MainView />;
+
     }
 }
 
