@@ -1,0 +1,1 @@
+{"mappings":";ACEA;EACI,kBAHK;EAIL","sources":["src/components/login-view/login-view.scss","src/index.scss"],"sourcesContent":[null,"$color1: steelblue;\r\n\r\nhtml body {\r\n    background-color: $color1;\r\n    margin: 10px;\r\n}"],"names":[],"version":3,"file":"index.52d99ebd.css.map","sourceRoot":"/__parcel_source_root/"}
