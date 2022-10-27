@@ -3,6 +3,8 @@ import axios from 'axios';
 import LoginView from '../login-view/login-view';
 import MovieCard from '../movie-card/movie-card';
 import MovieView from '../movie-view/movie-view';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 export class MainView extends React.Component {
 
@@ -31,10 +33,15 @@ export class MainView extends React.Component {
         });
     }
 
-    onLoggedIn(user) {
+    onLoggedIn(authData) {
+        console.log(authData);
         this.setState({
-            user
+            user: authData.user.Username
         });
+
+        localStorage.setItem('token', authData.token);
+        localStorage.setItem('user', authData.user.Username);
+        this.getMovies(authData.token);
     }
 
     render() {
@@ -46,23 +53,27 @@ export class MainView extends React.Component {
 
         return (
             <div className="main-view">
-                {selectedMovie ?
-                    <MovieView
-                        movie={selectedMovie}
-                        onBackClick={(newSelectedMovie) => {
-                            this.setSelectedMovie(newSelectedMovie);
-                        }} />
+                {selectedMovie ? (
+                    <Row className="justify-content-md-center">
+                        <Col md={8}>
+                            <MovieView
+                                movie={selectedMovie}
+                                onBackClick={(newSelectedMovie) => {
+                                    this.setSelectedMovie(newSelectedMovie);
+                                }} />
+                        </Col>
+                    </Row>
+                )
+                    : (
+                        <Row className="justify-content-md-center">
+                            {movies.map(movie => (
+                                <Col md={3}>
+                                    <MovieCard key={movie._id} movie={movie} onMovieClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
+                                </Col>
+                            ))}
+                        </Row>
 
-                    : movies.map((movie) => (
-                        <MovieCard
-                            key={movie._id}
-                            movie={movie}
-                            onMovieClick={(newSelectedMovie) => {
-                                this.setSelectedMovie(newSelectedMovie);
-                            }}
-                        />
-                    ))
-                }
+                    )}
             </div>
         );
     }
