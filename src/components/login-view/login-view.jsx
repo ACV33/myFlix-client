@@ -18,18 +18,18 @@ export function LoginView(props) {
             Username: username,
             Password: password
         })
-            .then(response => {
-                const data = response.data;
-                props.onLoggenIn(data);
-            })
             .catch(e => {
                 console.log('user does not exist')
             });
+        console.log(username, password);
+        /* Send a request to the server for authentication */
+        /* then call props.onLoggedIn(username) */
+        props.onLoggedIn(username);
     };
 
     const handleClickRegister = (e) => {
         e.preventDefault();
-        props.toRegisrationView('');
+        props.toRegistrationView('');
     };
 
     return (

@@ -1,4 +1,114 @@
-.my-flix {
-  color: steelblue;
+html body {
+  background-color: steelblue;
+  margin: 10px;
 }
+.login-view {
+  background-color: #cdd3d5;
+  border: solid black 2px;
+  border-radius: 15px;
+  padding: 50px;
+}
+
+.register-row {
+  margin-top: 50px;
+}
+
+.login-view__line {
+  margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+  .login-form {
+    margin-top: 100px;
+  }
+  .register-row {
+    margin-top: 100px;
+  }
+}
+@media (max-width: 768px) {
+  .login-view {
+    padding: 5px;
+  }
+}
+
+.movie-view {
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
+  background-color: #cdd3d5;
+}
+
+img {
+  display: block;
+  border-radius: 25px;
+  max-width: 100%;
+  max-height: 700px;
+  height: auto;
+  margin: 20px auto;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+#back-button {
+  font-size: 30px;
+  background-color: white;
+  color: black;
+  border: none;
+  margin: 5px;
+  padding: 0 0 7px 0;
+}
+
+#favorite-button {
+  font-size: 30px;
+  background-color: white;
+  color: black;
+  border: none;
+  margin: 5px;
+  padding: 0 0 7px 0;
+}
+
+.movie-view-button:hover {
+  cursor: pointer;
+}
+
+.movie-view__title-line {
+  font-size: 28px;
+  font-weight: 600;
+  font-family: Lucida Console;
+  padding: 2px;
+}
+
+.movie-view__line__label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.movie-view__line__value {
+  font-size: 18px;
+}
+
+.description {
+  padding-top: 3em;
+}
+.registration-view {
+  background-color: #cdd3d5;
+  border: solid black 2px;
+  border-radius: 15px;
+  padding: 50px;
+}
+
+.registration-form__label-tips {
+  font-style: italic;
+  font-size: 12px;
+  color: gray;
+  text-align: right;
+}
+
+.registration-form__line {
+  margin-top: 10px;
+}
+
+.register-button {
+  margin-top: 10px;
+}
+
 /*# sourceMappingURL=index.caa67093.css.map */
