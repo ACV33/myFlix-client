@@ -14,22 +14,23 @@ export function LoginView(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('https://ashlis-movie-api.herokuapp.com/login', {
+        axios.post('https://ashlis-movie-api.herokuapp.com/movies', {
             Username: username,
             Password: password
         })
             .then(response => {
                 const data = response.data;
-                props.onLoggenIn(data);
+                props.onLoggedIn(data);
             })
             .catch(e => {
-                console.log('user does not exist')
+                console.log('No User Exists')
+
             });
     };
 
     const handleClickRegister = (e) => {
         e.preventDefault();
-        props.toRegisrationView('');
+        props.toRegistrationView('');
     };
 
     return (

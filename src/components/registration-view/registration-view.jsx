@@ -1,83 +1,163 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button, Card, CardGroup, Container, Col, Row, } from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-import './resgistration-view.scss';
-
+import './registration-view.scss';
 
 export function RegistrationView(props) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [birthday, setBirthday] = useState("");
+    const [username, setUsername] = useState('');
+    const [password1, setPassword1] = useState('');
+    const [password2, setPassword2] = useState('');
+    const [email, setEmail] = useState('');
+    const [birthday, setBirthday] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(username, password, email, birthday);
-        props.Registration(username);
+        props.onRegister(true, username);
     };
 
+    let labelSize = 4;
+    let fieldSize = 5;
+    let emptySize = 1;
+
     return (
-        <Container>
+        <div className='registration-view'>
             <Row>
                 <Col>
-                    <CardGroup>
-                        <Form>
-                            <Form.Group>
-                                <Form.Label>
-                                    Username: </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={username}
-                                    onChange={e => setUsername(e.target.value)}
-                                    required
-                                    placeholder="Enter a  username" />
-                            </Form.Group>
-
-
-                            <Form.Group>
-                                <Form.Label>
-                                    Password: </Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    required
-                                    minlength="8"
-                                />
-                            </Form.Group>
-
-                            <Form.Group>
-                                <Form.Label>
-                                    Email: </Form.Label>
-                                <Form.Control
-                                    type="email"
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                    required
-                                    minlength="8"
-                                />
-                            </Form.Group>
-
-                            <Form.Group>
-                                <Form.Label>
-                                    Birthday: </Form.Label>
-                                <Form.Control
-                                    type="birthday"
-                                    value={birthday}
-                                    onChange={e => setBirthday(e.target.value)}
-                                />
-                            </Form.Group>
-                            <button type="submit" onClick={handleSubmit}>Register</button>
-                            <button type="button" onClick={() => { props.onBackClick(null); }}>Return to Login Page</button>
-                        </Form>
-                    </CardGroup>
+                    <h2 className='display-4'>Sign up for a free MyFlix account</h2>
                 </Col>
             </Row>
-        </Container>
+
+            <Form className='registration-form'>
+                <Form.Group className='registration-form__line'>
+                    <Col md={emptySize}></Col>
+                    <Col md={labelSize}>
+                        <Form.Label className='registration-form__line-label'>
+                            Username:{' '}
+                            <span className='registration-form__label-tips'>
+                                (5+ characters, no spaces)
+                            </span>
+                        </Form.Label>
+                    </Col>
+                    <Col md={fieldSize}>
+                        <Form.Control
+                            className='registration-form__line__input-field'
+                            type='text'
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </Col>
+                </Form.Group>
+
+                <Form.Group className='registration-form__line'>
+                    <Row>
+                        <Col md={emptySize}></Col>
+                        <Col md={labelSize}>
+                            <Form.Label className='registration-form__line-label'>
+                                Enter desired password{' '}
+                                <span className='registration-form__label-tips'>
+                                    (must not be blank)
+                                </span>
+                            </Form.Label>
+                        </Col>
+                        <Col md={labelSize}>
+                            <Form.Control
+                                className='registration-form__line__input-field'
+                                type='text'
+                                value={password1}
+                                onChange={(e) => setPassword1(e.target.value)}
+                            />
+                        </Col>
+                    </Row>
+                </Form.Group>
+
+                <Form.Group className='registration-form__line'>
+                    <Row>
+                        <Col md={emptySize}></Col>
+                        <Col md={labelSize}>
+                            <Form.Label className='registration-form__line-label'>
+                                Re-enter password:{' '}
+                                <span className='registration-form__label-tips'>
+                                    passwords must match
+                                </span>
+                            </Form.Label>
+                        </Col>
+                        <Col md={fieldSize}>
+                            <Form.Control
+                                className='registration-form__line__input-field'
+                                type='text'
+                                value={password2}
+                                onChange={(e) => setPassword2(e.target.value)}
+                            />
+                        </Col>
+                    </Row>
+                </Form.Group>
+
+                <Form.Group className='registration-form__line'>
+                    <Row>
+                        <Col md={emptySize}></Col>
+                        <Col md={labelSize}>
+                            <Form.Label className='registration-form__line-label'>
+                                Email:{' '}
+                                <span className='registration-form__label-tips'>
+                                    (required)
+                                </span>
+                            </Form.Label>
+                        </Col>
+                        <Col md={fieldSize}>
+                            <Form.Control
+                                className='registration-form__line__input-field'
+                                type='text'
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </Col>
+                    </Row>
+                </Form.Group>
+
+                <Form.Group className='registration-form__line'>
+                    <Row>
+                        <Col md={emptySize}></Col>
+                        <Col md={labelSize}>
+                            <Form.Label className='registration-form__line-label'>
+                                Birthday:{' '}
+                                <span className='registration-form__label-tips'>
+                                    (optional)
+                                </span>
+                            </Form.Label>
+                        </Col>
+                        <Col md={fieldSize}>
+                            <Form.Control
+                                className='registration-form__line__input-field'
+                                type='text'
+                                value={birthday}
+                                onChange={(e) => setBirthday(e.target.value)}
+                            />
+                        </Col>
+                    </Row>
+                </Form.Group>
+
+                <Row>
+                    <Col md={labelSize + fieldSize + emptySize - 2}></Col>
+                    <Col md={1}>
+                        <Button
+                            className='register-button'
+                            variant='primary'
+                            type='submit'
+                            onClick={handleSubmit}
+                        >
+                            Register
+                        </Button>
+                    </Col>
+                </Row>
+            </Form>
+        </div>
     );
 }
 
 RegistrationView.propTypes = {
-    onRegistration: PropTypes.func.isRequired,
+    onRegister: PropTypes.func.isRequired,
 };
