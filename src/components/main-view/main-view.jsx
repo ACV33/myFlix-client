@@ -6,6 +6,7 @@ import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { RegistrationView } from '../registration-view/registration-view';
+import { LogoutButton } from '../logout-button/logout-button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -23,13 +24,14 @@ export class MainView extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('https://ashlis-movie-api.herokuapp.com/movies')
-            .then((response) => {
+        axios
+            .get('https://ashlis-movie-api.herokuapp.com/movies')
+            .then(response => {
                 this.setState({
                     movies: response.data,
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 console.log(error);
             });
     }
@@ -50,6 +52,9 @@ export class MainView extends React.Component {
         localStorage.setItem('token', authData.token);
         localStorage.setItem('user', authData.user.Username);
         this.getMovies(authData.token);
+    }
+    getMovies(token) {
+        axios.get('https://ashlis-movie-api.herokuapp.com/movies')
     }
 
     // passed to RegistrationView
@@ -72,21 +77,6 @@ export class MainView extends React.Component {
         this.setState({
             registered: false,
         });
-    }
-
-    getMovies(token) {
-        axios.get('https://ashlis-movie-api.herokuapp.com/movies', {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then(response => {
-                // Assign the result to the state
-                this.setState({
-                    movies: response.data
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
     }
 
     render() {
