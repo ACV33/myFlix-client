@@ -54,7 +54,17 @@ export class MainView extends React.Component {
         this.getMovies(authData.token);
     }
     getMovies(token) {
-        axios.get('https://ashlis-movie-api.herokuapp.com/movies')
+        axios.get('https://ashlis-movie-api.herokuapp.com/movies', {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+            .then(response => {
+                this.setState({
+                    movies: response.data
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     // passed to RegistrationView
@@ -66,10 +76,11 @@ export class MainView extends React.Component {
     }
 
     // passed to LogoutButton
-    logoutUser(uselessParam) {
+    onLoggedOut() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         this.setState({
-            user: false,
-            selectedMovie: null,
+            user: null,
         });
     }
 
