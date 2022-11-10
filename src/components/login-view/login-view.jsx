@@ -11,21 +11,45 @@ import './login-view.scss';
 export function LoginView(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [usernameErr, setUsernameErr] = useState('');
+    const [passwordErr, setPasswordErr] = useState('');
+
+    const validate = () => {
+        let isReq = true;
+        if (!username) {
+            setUsernameErr('Username Required');
+            isReq = false;
+        } else if (username.length < 5) {
+            setUsernameErr('Username must be at least 5 characters long');
+            isReq = false;
+        }
+        if (!password) {
+            setPasswordErr('Password Required');
+            isReq = false;
+        } else if (password.length < 6) {
+            setPassword('Password must be 6 characters long');
+            isReq = false;
+        }
+        return isReq;
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('https://ashlis-movie-api.herokuapp.com/movies', {
-            Username: username,
-            Password: password
-        })
-            .then(response => {
-                const data = response.data;
-                props.onLoggedIn(data);
+        const isReq = validate();
+        if (isReq) {
+            axios.post('https://ashlis-movie-api.herokuapp.com/login', {
+                Username: username,
+                Password: password
             })
-            .catch(e => {
-                console.log('No User Exists')
+                .then(response => {
+                    const data = response.data;
+                    props.onLoggedIn(data);
+                })
+                .catch(e => {
+                    console.log('No User Exists')
 
-            });
+                });
+        }
     };
 
     const handleClickRegister = (e) => {
@@ -53,6 +77,7 @@ export function LoginView(props) {
                                 type='text'
                                 onChange={(e) => setUsername(e.target.value)}
                             />
+                            {usernameErr && <p>{usernameErr}</p>}
                         </Col>
                     </Row>
                 </Form.Group>
@@ -68,6 +93,7 @@ export function LoginView(props) {
                                 type='text'
                                 onChange={(e) => setPassword(e.target.value)}
                             />
+                            {passwordErr && <p>{passwordErr}</p>}
                         </Col>
                     </Row>
                 </Form.Group>
@@ -102,5 +128,4 @@ export function LoginView(props) {
 
 LoginView.propTypes = {
     onLoggedIn: PropTypes.func.isRequired,
-    toRegistrationView: PropTypes.func.isRequired,
 };
