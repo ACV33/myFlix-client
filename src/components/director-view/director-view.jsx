@@ -3,8 +3,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { connect } from 'react-redux';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 
 import './director-view.scss';
 import { MovieCard } from '../movie-card/movie-card';

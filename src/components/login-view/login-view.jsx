@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './login-view.scss';
 
@@ -46,86 +48,63 @@ export function LoginView(props) {
                     props.onLoggedIn(data);
                 })
                 .catch(e => {
-                    console.log('No User Exists')
+                    console.log('No User Exists');
+                    setIsWrong(true);
 
                 });
         }
     };
 
-    const handleClickRegister = (e) => {
-        e.preventDefault();
-        props.toRegistrationView('');
-    };
 
     return (
-        <div className='login-view'>
-            <Row>
-                <Col>
-                    <h2 className='display-4'>Login to myFlix</h2>
-                </Col>
-            </Row>
-
-            <Form className='login-form'>
-                <Form.Group controlId='formUsername'>
-                    <Row className='login-view__line'>
-                        <Col sm={0} md={3}></Col>
-                        <Col sm={12} md={2}>
-                            <Form.Label>Username:</Form.Label>
-                        </Col>
-                        <Col sm={12} md={4}>
-                            <Form.Control
-                                type='text'
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                            {usernameErr && <p>{usernameErr}</p>}
-                        </Col>
-                    </Row>
+        <>
+            <h1 className="heading mb-4 mt-4">Login</h1>
+            <Form >
+                <Form.Group controlId="formUsername">
+                    <Form.Label>Username:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        required
+                        placeholder="Your username" />
+                    {/* display validation error */}
+                    {usernameErr && <p className="error">{usernameErr}</p>}
                 </Form.Group>
-
-                <Form.Group controlId='formPassword'>
-                    <Row className='login-view__line'>
-                        <Col sm={0} md={3}></Col>
-                        <Col sm={12} md={2}>
-                            <Form.Label>Password:</Form.Label>
-                        </Col>
-                        <Col sm={12} md={4}>
-                            <Form.Control
-                                type='text'
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                            {passwordErr && <p>{passwordErr}</p>}
-                        </Col>
-                    </Row>
+                <Form.Group controlId="formPassword">
+                    <Form.Label>Password:</Form.Label>
+                    <Form.Control
+                        type="password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        required
+                        minLength="8"
+                        placeholder="Your password" />
+                    {/* display validation error */}
+                    {passwordErr && <p className="error">{passwordErr}</p>}
                 </Form.Group>
-
-                <Row className='login-view__line'>
-                    <Col md={8}></Col>
-                    <Col>
-                        <Button variant='primary' type='submit' onClick={handleSubmit}>
-                            Log in
-                        </Button>
-                    </Col>
-                </Row>
-            </Form>
-
-            <Row className='register-row'>
-                <Col md={3}>
-                    <p>Don't have an account? </p>
-                </Col>
-                <Col>
-                    <Button
-                        variant='secondary'
-                        type='submit'
-                        onClick={handleClickRegister}
-                    >
+                <Button variant="primary" type="submit" onClick={handleSubmit} className="btn-login mt-4 float-right">
+                    Submit
+                </Button>
+                <Link to="/register">
+                    <Button variant="secondary" type="button" className="btn-register mt-4 mr-4 float-right">
                         Register
                     </Button>
-                </Col>
-            </Row>
-        </div>
+                </Link>
+                <p className="error" style={{ visibility: isWrong ? 'visible' : 'hidden' }}>E-mail and/or password is incorrect.</p>
+            </Form>
+        </>
     );
 }
 
 LoginView.propTypes = {
-    onLoggedIn: PropTypes.func.isRequired,
-};
+    username: PropTypes.string,
+    password: PropTypes.string
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    handleSubmit: (event) =>
+        dispatch(handleSubmit(event))
+});
+
+export default connect(null, mapDispatchToProps)(LoginView);
