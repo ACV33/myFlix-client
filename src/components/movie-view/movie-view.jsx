@@ -1,90 +1,79 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image'
+import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+
 
 import './movie-view.scss';
 
-export class MovieView extends React.Component {
-    keypressCallback(event) {
-        console.log(event.key);
-    }
 
-    componentDidMount() {
-        document.addEventListener('keypress', this.keypressCallback);
-    }
+export class MovieView extends React.Component {
+
 
     render() {
-        const { movie, onBackClick } = this.props;
+        const { movie, onBackClick, isFav, handleDeleteFavorite, handleAddFavorite } = this.props;
 
         return (
-            <Row className='movie-view'>
-                <Col lg={8}>
-                    <div className='movie-view__title-line'>
-                        <Button
-                            className='movie-view-button'
-                            onClick={() => {
-                                onBackClick(null);
-                            }}
-                        >
-                            &lt;
-                        </Button>
-                        <span className='movie-view__title'> {movie.Title} </span>
-                        <Button className='movie-view-button'>&#10032;</Button>
-                    </div>
-
-                    <div className='movie-info'>
-                        <div className='movie-view__line'>
-                            <span className='movie-view__line__label'>Genre: </span>
-                            <span className='movie-view__line__value'>
-                                {movie.Genre.Name}
-                            </span>
+            <>
+                <Row className="mt-3 mb-2">
+                    <Col xs={12} md={4}>
+                        <div className="movie-image">
+                            <Image src={movie.ImagePath} alt={`Poster: ${movie.Title}`} title={movie.Title} className="image-movie float-md-right w-100" rounded fluid />
                         </div>
+                    </Col>
+                    <Col xs={12} md={8}>
+                        <Row >
+                            <Col xs={10}>
+                                <h1 className="h-movie d-inline mr-3">{movie.Title}</h1>
+                            </Col>
+                            <Col xs={2}>
 
-                        <div className='movie-view__line'>
-                            <span className='movie-view__line__label'>Director: </span>
-                            <span className='movie-view__line__value'>
-                                {movie.Director.Name}
-                            </span>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <div className="movie-genre">
+                                    <span className="label font-weight-bold">Genre: </span>
+                                    {/* <Button variant="link">Genre</Button> */}
+                                    <Link to={`/genres/${movie.Genre.Name}`}>
+                                        <span className="movie-link">{movie.Genre.Name}</span>
+                                    </Link>
+                                </div>
+
+                                <div className="movie-director">
+                                    <span className="label font-weight-bold">Director: </span>
+                                    {/* <Button variant="link" className="label font-weight-bold">Director</Button> */}
+                                    <Link to={`/directors/${movie.Director.Name}`} >
+                                        <span className="movie-link">{movie.Director.Name}</span>
+                                    </Link>
+                                </div>
+                            </Col>
+                        </Row>
+                        <div className="movie-description mb-4 mt-4">
+                            <span className="value">{movie.Description}</span>
                         </div>
-
-                        <div className='movie-view__line description'>
-                            <span className='movie-view__line__label'>Description: </span>
-                            <span className='movie-view__line__value'>
-                                {movie.Description}
-                            </span>
-                        </div>
-                    </div>
-                </Col>
-
-                <Col lg={4}>
-                    <div className='movie-poster'>
-                        <img src={movie.ImagePath} />
-                    </div>
-                </Col>
-            </Row>
-        );
+                    </Col>
+                </Row>
+            </>
+        )
     }
 }
 
-MovieView.propTypes = {
-    movie: PropTypes.shape({
-        Title: PropTypes.string.isRequired,
-        Description: PropTypes.string.isRequired,
-        Featured: PropTypes.bool.isRequired,
-        ImagePath: PropTypes.string.isRequired,
-        _id: PropTypes.string.isRequired,
-        Genre: PropTypes.shape({
-            Name: PropTypes.string.isRequired,
-            Description: PropTypes.string.isRequired,
-        }).isRequired,
-        Director: PropTypes.shape({
-            Name: PropTypes.string.isRequired,
-            Bio: PropTypes.string.isRequired,
-            BirthYear: PropTypes.number.isRequired,
-            DeathYear: PropTypes.number,
-        }),
-    }).isRequired,
-    onBackClick: PropTypes.func.isRequired,
+const mapStateToProps = (state) => {
+    return {
+        movies: state.movies,
+        user: state.user
+    };
 };
+
+const mapDispatchToProps = (dispatch) => ({
+    handleDeleteFavorite: (event) =>
+        dispatch(deleteFavorite(event)),
+    handleAddFavorite: (event) =>
+        dispatch(setFavorite(event)),
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieView);

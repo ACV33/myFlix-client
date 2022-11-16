@@ -2,127 +2,105 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import axios from 'axios';
-
-import './login-view.scss';
 
 export function LoginView(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    // Declare hook for each input
     const [usernameErr, setUsernameErr] = useState('');
     const [passwordErr, setPasswordErr] = useState('');
 
+    // validate user inputs
     const validate = () => {
         let isReq = true;
         if (!username) {
-            setUsernameErr('Username Required');
+            setUsernameErr('Username is required');
             isReq = false;
-        } else if (username.length < 5) {
-            setUsernameErr('Username must be at least 5 characters long');
+        } else if (username.length < 2) {
+            setUsernameErr(
+                'Username must be at least 2 characters long'
+            );
             isReq = false;
         }
         if (!password) {
-            setPasswordErr('Password Required');
+            setPasswordErr('Password is required');
             isReq = false;
         } else if (password.length < 6) {
-            setPassword('Password must be 6 characters long');
+            setPasswordErr(
+                'Password must be at least 6 characters long'
+            );
             isReq = false;
         }
         return isReq;
-    }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const isReq = validate();
+
         if (isReq) {
-            axios.post('https://ashlis-movie-api.herokuapp.com/login', {
-                Username: username,
-                Password: password
-            })
-                .then(response => {
+            /*Send a request to the server for authentication*/
+            /* then call props.onLoggedIn(username), which provides the username to our parent component (child to parent communication)*/
+            axios
+                .post('https://ashlis-movie-api.herokuapp.com/login', {
+                    Username: username,
+                    Password: password,
+                })
+                .then((response) => {
+                    // response from the server incl. token
                     const data = response.data;
                     props.onLoggedIn(data);
                 })
-                .catch(e => {
-                    console.log('No User Exists')
-
+                .catch((e) => {
+                    console.error('no such user');
+                    alert('username and/or password are wrong');
                 });
         }
     };
 
-    const handleClickRegister = (e) => {
-        e.preventDefault();
-        props.toRegistrationView('');
-    };
-
     return (
-        <div className='login-view'>
-            <Row>
-                <Col>
-                    <h2 className='display-4'>Login to myFlix</h2>
+        <Form>
+            <Form.Group as={Row}>
+                <Form.Label column sm="12" htmlFor="username">
+                    Username:
+                </Form.Label>
+                <Col sm="10" md={6}>
+                    <Form.Control
+                        id="username"
+                        type="text"
+                        placeholder="Enter username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    {usernameErr && <p>{usernameErr}</p>}
                 </Col>
-            </Row>
-
-            <Form className='login-form'>
-                <Form.Group controlId='formUsername'>
-                    <Row className='login-view__line'>
-                        <Col sm={0} md={3}></Col>
-                        <Col sm={12} md={2}>
-                            <Form.Label>Username:</Form.Label>
-                        </Col>
-                        <Col sm={12} md={4}>
-                            <Form.Control
-                                type='text'
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                            {usernameErr && <p>{usernameErr}</p>}
-                        </Col>
-                    </Row>
-                </Form.Group>
-
-                <Form.Group controlId='formPassword'>
-                    <Row className='login-view__line'>
-                        <Col sm={0} md={3}></Col>
-                        <Col sm={12} md={2}>
-                            <Form.Label>Password:</Form.Label>
-                        </Col>
-                        <Col sm={12} md={4}>
-                            <Form.Control
-                                type='text'
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                            {passwordErr && <p>{passwordErr}</p>}
-                        </Col>
-                    </Row>
-                </Form.Group>
-
-                <Row className='login-view__line'>
-                    <Col md={8}></Col>
-                    <Col>
-                        <Button variant='primary' type='submit' onClick={handleSubmit}>
-                            Log in
-                        </Button>
-                    </Col>
-                </Row>
-            </Form>
-
-            <Row className='register-row'>
-                <Col md={3}>
-                    <p>Don't have an account? </p>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+                <Form.Label column sm="12" htmlFor="password">
+                    Password:
+                </Form.Label>{' '}
+                <Col sm="10" md={6}>
+                    <Form.Control
+                        id="password"
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    {passwordErr && <p>{passwordErr}</p>}
                 </Col>
-                <Col>
-                    <Button
-                        variant='secondary'
-                        type='submit'
-                        onClick={handleClickRegister}
-                    >
-                        Register
-                    </Button>
-                </Col>
-            </Row>
-        </div>
+            </Form.Group>
+            <Button
+                className="mr-3"
+                type="submit"
+                onClick={handleSubmit}>
+                Submit
+            </Button>
+        </Form>
     );
 }
 

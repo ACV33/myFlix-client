@@ -1,178 +1,212 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-
+import { Form, Button, Col, Row } from 'react-bootstrap';
 import './registration-view.scss';
+import axios from 'axios';
 
 export function RegistrationView(props) {
     const [username, setUsername] = useState('');
-    const [password1, setPassword1] = useState('');
-    const [password2, setPassword2] = useState('');
+    const [password, setPassword] = useState('');
+    const [birthday, setBirthdate] = useState('');
     const [email, setEmail] = useState('');
-    const [birthday, setBirthday] = useState('');
 
+    // hooks for user inputs
+    const [values, setValues] = useState({
+        usernameErr: '',
+        passwordErr: '',
+        birthdayErr: '',
+        emailErr: '',
+    });
+
+    // user validation
+    const validate = () => {
+        let isReq = true;
+        setValues((prevValue) => {
+            return {
+                usernameErr: '',
+                passwordErr: '',
+                emailErr: '',
+                birthdayErr: '',
+            };
+        });
+        if (!username) {
+            setValues((prevValue) => {
+                return {
+                    ...prevValue,
+                    usernameErr: 'Username is required',
+                };
+            });
+            isReq = false;
+        } else if (username.length < 2) {
+            setValues((prevValue) => {
+                return {
+                    ...prevValue,
+                    usernameErr:
+                        'Username must be at least 2 characters long',
+                };
+            });
+            isReq = false;
+        }
+        if (!password) {
+            setValues((prevValue) => {
+                return {
+                    ...prevValue,
+                    passwordErr: 'Password is required.',
+                };
+            });
+            isReq = false;
+        } else if (password.length < 6) {
+            setValues((prevValue) => {
+                return {
+                    ...prevValue,
+                    passwordErr:
+                        'Password must be at least 6 characters long',
+                };
+            });
+            isReq = false;
+        }
+        if (!email) {
+            setValues((prevValue) => {
+                return {
+                    ...prevValue,
+                    emailErr: 'Email is required.',
+                };
+            });
+            isReq = false;
+        } else if (email.indexOf('@') < 1) {
+            setValues((prevValue) => {
+                return {
+                    ...prevValue,
+                    emailErr: 'Email is invalid',
+                };
+            });
+            isReq = false;
+        }
+        return isReq;
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.onRegister(true, username);
+        const isReq = validate();
+        if (isReq) {
+            axios
+                .post('https://ashlis-movie-api.herokuapp.com/users', {
+                    Username: username,
+                    Password: password,
+                    Email: email,
+                    Birthday: birthday,
+                })
+                .then((response) => {
+                    const data = response.data;
+                    window.open('/', '_self'); //'_self' is necessary so that the page opens in the current tab
+                })
+                .catch((response) => {
+                    console.error(response);
+                    alert('User already exists - please login');
+                });
+        }
     };
 
-    let labelSize = 4;
-    let fieldSize = 5;
-    let emptySize = 1;
-
-    axios.post('https://ashlis-movie-api.herokuapp.com/users', {
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday
-    })
-        .then(response => {
-            const data = response.data;
-            console.log(data);
-            window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
-        })
-        .catch(e => {
-            console.log('error registering the user')
-        });
-
     return (
-        <div className='registration-view'>
-            <Row>
-                <Col>
-                    <h2 className='display-4'>Sign up for a free MyFlix account</h2>
+        <Form className="justify-content-center">
+            <Form.Group as={Row} className="reg-form-inputs">
+                <Form.Label
+                    column="true"
+                    sm="12"
+                    htmlFor="username">
+                    Username*:
+                </Form.Label>
+                <Col sm="10" md="5">
+                    <Form.Control
+                        id="username"
+                        type="text"
+                        placeholder="Enter username"
+                        value={username}
+                        required
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    {values.usernameErr && (
+                        <p className="validation-message">
+                            {values.usernameErr}
+                        </p>
+                    )}
                 </Col>
-            </Row>
-
-            <Form className='registration-form'>
-                <Form.Group className='registration-form__line'>
-                    <Col md={emptySize}></Col>
-                    <Col md={labelSize}>
-                        <Form.Label className='registration-form__line-label'>
-                            Username:{' '}
-                            <span className='registration-form__label-tips'>
-                                (5+ characters, no spaces)
-                            </span>
-                        </Form.Label>
-                    </Col>
-                    <Col md={fieldSize}>
-                        <Form.Control
-                            className='registration-form__line__input-field'
-                            type='text'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </Col>
-                </Form.Group>
-
-                <Form.Group className='registration-form__line'>
-                    <Row>
-                        <Col md={emptySize}></Col>
-                        <Col md={labelSize}>
-                            <Form.Label className='registration-form__line-label'>
-                                Enter desired password{' '}
-                                <span className='registration-form__label-tips'>
-                                    (must not be blank)
-                                </span>
-                            </Form.Label>
-                        </Col>
-                        <Col md={labelSize}>
-                            <Form.Control
-                                className='registration-form__line__input-field'
-                                type='text'
-                                value={password1}
-                                onChange={(e) => setPassword1(e.target.value)}
-                            />
-                        </Col>
-                    </Row>
-                </Form.Group>
-
-                <Form.Group className='registration-form__line'>
-                    <Row>
-                        <Col md={emptySize}></Col>
-                        <Col md={labelSize}>
-                            <Form.Label className='registration-form__line-label'>
-                                Re-enter password:{' '}
-                                <span className='registration-form__label-tips'>
-                                    passwords must match
-                                </span>
-                            </Form.Label>
-                        </Col>
-                        <Col md={fieldSize}>
-                            <Form.Control
-                                className='registration-form__line__input-field'
-                                type='text'
-                                value={password2}
-                                onChange={(e) => setPassword2(e.target.value)}
-                            />
-                        </Col>
-                    </Row>
-                </Form.Group>
-
-                <Form.Group className='registration-form__line'>
-                    <Row>
-                        <Col md={emptySize}></Col>
-                        <Col md={labelSize}>
-                            <Form.Label className='registration-form__line-label'>
-                                Email:{' '}
-                                <span className='registration-form__label-tips'>
-                                    (required)
-                                </span>
-                            </Form.Label>
-                        </Col>
-                        <Col md={fieldSize}>
-                            <Form.Control
-                                className='registration-form__line__input-field'
-                                type='text'
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </Col>
-                    </Row>
-                </Form.Group>
-
-                <Form.Group className='registration-form__line'>
-                    <Row>
-                        <Col md={emptySize}></Col>
-                        <Col md={labelSize}>
-                            <Form.Label className='registration-form__line-label'>
-                                Birthday:{' '}
-                                <span className='registration-form__label-tips'>
-                                    (optional)
-                                </span>
-                            </Form.Label>
-                        </Col>
-                        <Col md={fieldSize}>
-                            <Form.Control
-                                className='registration-form__line__input-field'
-                                type='text'
-                                value={birthday}
-                                onChange={(e) => setBirthday(e.target.value)}
-                            />
-                        </Col>
-                    </Row>
-                </Form.Group>
-
-                <Row>
-                    <Col md={labelSize + fieldSize + emptySize - 2}></Col>
-                    <Col md={1}>
-                        <Button
-                            className='register-button'
-                            variant='primary'
-                            type='submit'
-                            onClick={handleSubmit}
-                        >
-                            Register
-                        </Button>
-                    </Col>
-                </Row>
-            </Form>
-        </div>
+            </Form.Group>
+            <Form.Group as={Row} className="reg-form-inputs">
+                <Form.Label
+                    column="true"
+                    sm="12"
+                    htmlFor="password">
+                    Password*:
+                </Form.Label>
+                <Col sm="10" md="5">
+                    <Form.Control
+                        id="password"
+                        type="password"
+                        value={password}
+                        required
+                        placeholder="Enter password"
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    {values.passwordErr && (
+                        <p className="validation-message">
+                            {values.passwordErr}
+                        </p>
+                    )}
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="reg-form-inputs">
+                <Form.Label column="true" sm="12" htmlFor="e-mail">
+                    E-Mail*:
+                </Form.Label>
+                <Col sm="10" md="5">
+                    <Form.Control
+                        id="e-mail"
+                        type="email"
+                        value={email}
+                        placeholder="Enter Email"
+                        required
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    {values.emailErr && (
+                        <p className="validation-message">
+                            {values.emailErr}{' '}
+                        </p>
+                    )}
+                </Col>
+            </Form.Group>
+            <Form.Group className="mb-3 reg-form-inputs" as={Row}>
+                <Form.Label
+                    column="true"
+                    sm="12"
+                    htmlFor="birthday">
+                    Birthday:
+                </Form.Label>
+                <Col sm="10" md="5">
+                    <Form.Control
+                        id="birthday"
+                        type="date"
+                        value={birthday}
+                        onChange={(e) => setBirthdate(e.target.value)}
+                    />
+                </Col>
+            </Form.Group>
+            <Button
+                type="button"
+                className="mr-3"
+                onClick={handleSubmit}>
+                Sign up
+            </Button>
+            <Button type="button" href="/">
+                Log In instead
+            </Button>
+        </Form>
     );
 }
 
 RegistrationView.propTypes = {
-    onRegister: PropTypes.func.isRequired,
+    register: PropTypes.shape({
+        Username: PropTypes.string.isRequired,
+        Password: PropTypes.string.isRequired,
+        Email: PropTypes.string.isRequired,
+    }),
 };
