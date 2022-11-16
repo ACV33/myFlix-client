@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { setMovies } from '../../actions/actions';
+import { setUser } from '../../actions/actions';
+import { setFavorite } from '../../actions/actions';
+import { deleteFavorite } from '../../actions/actions';
 import MoviesList from '../movies-list/movies-list';
 
 import { LoginView } from '../login-view/login-view';
@@ -45,7 +48,7 @@ class MainView extends React.Component {
 
     getUser(token) {
         const user = localStorage.getItem('user');
-        axios.get(`https://watch-til-death.herokuapp.com/users/${user}`, {
+        axios.get(`https://ashlis-movie-api.herokuapp.com/users/${user}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(response => {
@@ -72,7 +75,7 @@ class MainView extends React.Component {
         let token = localStorage.getItem('token');
         /* Send a request to the server to delete favorite (delete) */
         if (token !== null && user !== null) {
-            axios.delete(`https://watch-til-death.herokuapp.com/users/${user.Username}/movies/${movieId}`, {
+            axios.delete(`https://ashlis-movie-api.herokuapp.com/users/${user.Username}/movies/${movieId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
                 .then(response => {
@@ -92,7 +95,7 @@ class MainView extends React.Component {
         let token = localStorage.getItem('token');
         if (token !== null && user !== null) {
             /* Send a request to the server to add favorite (delete) */
-            axios.post(`https://watch-til-death.herokuapp.com/users/${user.Username}/movies/${movieId}`, {}, {
+            axios.post(`https://ashlis-movie-api.herokuapp.com/users/${user.Username}/movies/${movieId}`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             })
                 .then(response => {

@@ -2,4 +2,171 @@ html body {
   background-color: steelblue;
   margin: 10px;
 }
+
+.movie-view {
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
+  background-color: #cdd3d5;
+}
+
+img {
+  display: block;
+  border-radius: 25px;
+  max-width: 100%;
+  max-height: 700px;
+  height: auto;
+  margin: 20px auto;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+#back-button {
+  font-size: 30px;
+  background-color: white;
+  color: black;
+  border: none;
+  margin: 5px;
+  padding: 0 0 7px 0;
+}
+
+#favorite-button {
+  font-size: 30px;
+  background-color: white;
+  color: black;
+  border: none;
+  margin: 5px;
+  padding: 0 0 7px 0;
+}
+
+.movie-view-button:hover {
+  cursor: pointer;
+}
+
+.movie-view__title-line {
+  font-size: 28px;
+  font-weight: 600;
+  font-family: Lucida Console;
+  padding: 2px;
+}
+
+.movie-view__line__label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.movie-view__line__value {
+  font-size: 18px;
+}
+
+.description {
+  padding-top: 3em;
+}
+.registration-view {
+  background-color: #cdd3d5;
+  border: solid black 2px;
+  border-radius: 15px;
+  padding: 50px;
+}
+
+.registration-form__label-tips {
+  font-style: italic;
+  font-size: 12px;
+  color: gray;
+  text-align: right;
+}
+
+.registration-form__line {
+  margin-top: 10px;
+}
+
+.register-button {
+  margin-top: 10px;
+}
+.main-grid-item {
+  display: flex;
+}
+
+/* customizations */
+.error {
+  color: red;
+}
+
+.icon-star {
+  color: #9F2D66;
+  cursor: pointer;
+  stroke: #9F2D66;
+}
+
+.heading {
+  font-family: "Oswald", sans-serif;
+  color: #3A7898;
+}
+
+.h2-profile {
+  font-family: "Oswald", sans-serif;
+  color: #3A7898;
+}
+
+.icon-back {
+  color: #3A7898;
+  cursor: pointer;
+}
+.icon-back :hover {
+  color: #2c5b73;
+}
+.h1-genre {
+  font-family: "Oswald", sans-serif;
+  color: #3A7898;
+}
+
+.h2-genre {
+  font-family: "Oswald", sans-serif;
+  color: #3A7898;
+}
+
+.icon-back {
+  color: #3A7898;
+  cursor: pointer;
+}
+.icon-back :hover {
+  color: #2c5b73;
+}
+.h1-director {
+  font-family: "Oswald", sans-serif;
+  color: #3A7898;
+}
+
+.h2-director {
+  font-family: "Oswald", sans-serif;
+  color: #3A7898;
+}
+
+.icon-back {
+  color: #3A7898;
+  cursor: pointer;
+}
+.icon-back :hover {
+  color: #2c5b73;
+}
+.brand {
+  color: #4b94ba;
+}
+
+.colornav {
+  background-color: #fcf6f5;
+  border-bottom: 5px solid #8abad3;
+}
+
+.nav-element {
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0 16px 0 0;
+  padding: 5px 0;
+}
+
+.nav-logout {
+  font-weight: 600;
+  font-size: 20px;
+  cursor: pointer;
+}
 /*# sourceMappingURL=index.9409fe65.css.map */

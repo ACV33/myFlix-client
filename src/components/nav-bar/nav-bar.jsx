@@ -28,7 +28,7 @@ export function NavBar({ user }) {
     return (
         <Navbar collapseOnSelect expand="lg" className="colornav">
             <Container>
-                <Navbar.Brand className="brand" href="/">Watch-Til-Death</Navbar.Brand>
+                <Navbar.Brand className="brand" href="/">Ashli's Movie App </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto ml-auto">

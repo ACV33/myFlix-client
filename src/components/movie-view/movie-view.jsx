@@ -1,12 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image'
+import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+
 
 import './movie-view.scss';
 
+
 export class MovieView extends React.Component {
+
+
     render() {
         const { movie, onBackClick, isFav, handleDeleteFavorite, handleAddFavorite } = this.props;
 
@@ -22,6 +27,9 @@ export class MovieView extends React.Component {
                         <Row >
                             <Col xs={10}>
                                 <h1 className="h-movie d-inline mr-3">{movie.Title}</h1>
+                            </Col>
+                            <Col xs={2}>
+
                             </Col>
                         </Row>
                         <Row>
