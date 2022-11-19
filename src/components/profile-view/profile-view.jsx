@@ -66,7 +66,7 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
         if (isReq) {
 
             /* Send a request to the server to change user data (put) */
-            axios.put(`https://watch-til-death.herokuapp.com/users/${user.Username}`, {
+            axios.put(`https://ashlis-movie-api.herokuapp.com/users/${user.Username}`, {
                 Username: username,
                 Password: password,
                 Email: email,
@@ -87,7 +87,7 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
     // unregister
     const handleUnreg = () => {
         let token = localStorage.getItem('token');
-        axios.delete(`https://watch-til-death.herokuapp.com/users/${user.Username}`, {
+        axios.delete(`https://ashlis-movie-api.herokuapp.com/users/${user.Username}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(response => {
@@ -159,11 +159,19 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
                                 onChange={e => setBirthday(e.target.value)}
                                 required />
                         </Form.Group>
-                        <Button variant="primary" type="submit" onClick={handleUpdate} className="mt-4 float-right">
+                        <Button
+                            variant="primary"
+                            className="mt-4 float-right"
+                            type="submit"
+                            onClick={() => handleUpdate(user._id)} >
                             Update
                         </Button>
                     </Form>
-                    <Button variant="secondary" type="button" onClick={handleUnreg} className="mt-4 mr-4 float-right">
+                    <Button
+                        variant="secondary"
+                        className="mt-4 float-right"
+                        type="submit"
+                        onClick={() => handleDeleteUser(user._id)} >
                         Unregister
                     </Button>
                 </Col>
@@ -188,7 +196,14 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
                                 </div>
 
                             </Card.Body>
+                            <Button
+                                className="mr-3"
+                                type="button"
+                                onClick={() => handleDeleteFavorite(movie._id)} >
+                                Delete
+                            </Button>
                         </Card>
+
                     </Col>
                 ))}
                 {!(user.FavoriteMovies.length > 0) && <Col><p>You have not added any movies to your list of favorites yet. Click the star next to a movie's title to add it to your list of favorites.</p></Col>}
@@ -215,7 +230,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     handleUpdate: (event) =>
         dispatch(updateUser(event)),
-    handleUnreg: (event) =>
+    handleSet: (event) =>
+        dispatch(setUser(event)),
+    handleDeleteUser: (event) =>
         dispatch(deleteUser(event)),
     handleDeleteFavorite: (event) =>
         dispatch(deleteFavorite(event))
