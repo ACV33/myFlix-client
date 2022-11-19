@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
+import Button from 'react-bootstrap/Button';
 
 
 import './movie-view.scss';
@@ -33,6 +34,15 @@ export class MovieView extends React.Component {
                             </Col>
                         </Row>
                         <Row>
+                            <Button
+                                className="mr-3"
+                                type="button"
+                                onClick={() => handleAddFavorite(movie._id)} >
+                                Add Favorites
+                            </Button>
+                        </Row>
+
+                        <Row>
                             <Col>
                                 <div className="movie-genre">
                                     <span className="label font-weight-bold">Genre: </span>
@@ -55,7 +65,7 @@ export class MovieView extends React.Component {
                             <span className="value">{movie.Description}</span>
                         </div>
                     </Col>
-                </Row>
+                </Row >
             </>
         )
     }

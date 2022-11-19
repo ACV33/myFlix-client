@@ -1,31 +1,28 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-import { setMovies } from '../../actions/actions';
-import { setUser } from '../../actions/actions';
-import { setFavorite } from '../../actions/actions';
-import { deleteFavorite } from '../../actions/actions';
+import { setMovies, setUser, setFavorite, deleteFavorite } from '../../actions/actions';
 import MoviesList from '../movies-list/movies-list';
-
 import { LoginView } from '../login-view/login-view';
 import { MovieView } from '../movie-view/movie-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import { ProfileView } from '../profile-view/profile-view';
-import { GenreView } from '../genre-view/genre-view'
+import { GenreView } from '../genre-view/genre-view';
 import { DirectorView } from '../director-view/director-view';
 import { NavBar } from '../nav-bar/nav-bar';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
 import './main-view.scss';
 
 class MainView extends React.Component {
+
     constructor() {
         super();
     }
 
+    // after mount, fetch movies from API
     componentDidMount() {
         let accessToken = localStorage.getItem('token');
         if (accessToken !== null) {
@@ -42,10 +39,12 @@ class MainView extends React.Component {
                 this.props.setMovies(response.data);
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error)
             });
     }
 
+
+    // Fetch user data
     getUser(token) {
         const user = localStorage.getItem('user');
         axios.get(`https://ashlis-movie-api.herokuapp.com/users/${user}`, {
@@ -59,7 +58,7 @@ class MainView extends React.Component {
             });
     }
 
-
+    /* successful log in =>  update `user` property in state to that particular user*/
     onLoggedIn(authData) {
         this.props.setUser(authData.user);
         localStorage.setItem('token', authData.token);
@@ -67,9 +66,7 @@ class MainView extends React.Component {
         this.getMovies(authData.token)
     }
 
-
-
-
+    // delete from favorites
     handleDeleteFavorite = (movieId) => {
         const { user } = this.props;
         let token = localStorage.getItem('token');
@@ -231,4 +228,5 @@ let mapStateToProps = state => {
     }
 }
 
+// export default connect(mapStateToProps, {mapDispatchToProps object with actionCreators for dispatched actions})(Component);
 export default connect(mapStateToProps, { setMovies, setUser, setFavorite, deleteFavorite })(MainView);
