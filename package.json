@@ -20,7 +20,8 @@
   "homepage": "https://github.com/ACV33/myFlix-client#readme",
   "dependencies": {
     "axios": "^1.0.0",
-    "parcel": "^2.0.0-rc.0",
+    "bundler": "^0.8.0",
+    "parcel": "^2.8.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
