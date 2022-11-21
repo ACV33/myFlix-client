@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ACV33/myFlix-client#readme",
   "dependencies": {
+    "@parcel/diagnostic": "^2.8.0",
     "axios": "^1.0.0",
     "bundler": "^0.8.0",
     "parcel": "^2.8.0",
@@ -32,6 +33,6 @@
     "redux-devtools-extension": "^2.13.9"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.0.0-rc.0"
+    "@parcel/transformer-sass": "^2.8.0"
   }
 }
