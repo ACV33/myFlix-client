@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ACV33/myFlix-client#readme",
   "dependencies": {
+    "@parcel/diagnostic": "^2.8.0",
     "axios": "^1.0.0",
     "bundler": "^0.8.0",
     "parcel": "^2.8.0",
